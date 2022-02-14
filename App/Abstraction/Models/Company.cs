@@ -1,11 +1,10 @@
-namespace App.Abstraction.Models
+namespace App.Abstraction.Models;
+
+public class Company
 {
-    public class Company
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public Classification Classification { get; set; }
-    }
+    public Classification Classification { get; set; }
 }

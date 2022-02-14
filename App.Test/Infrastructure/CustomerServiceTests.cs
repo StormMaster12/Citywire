@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using App.Abstraction;
 using App.Abstraction.Models;
-using App.Abstraction.ThirdParty;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -44,7 +42,7 @@ public class CustomerServiceTests : IClassFixture<CustomerServiceTestFixture>
         var companyId = 1;
 
         _fixture.MockCustomerValidator.Setup(x => x.ValidateCustomer(firstname, surname, email, dob)).Returns(true);
-        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync((Company?)null);
+        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync((Company?) null);
 
         var result = await _fixture.Service.AddCustomer(firstname, surname, email, dob, 1);
 
@@ -59,21 +57,23 @@ public class CustomerServiceTests : IClassFixture<CustomerServiceTestFixture>
         var email = "e@.";
         var dob = new DateTime(1987, 1, 1);
         var companyId = 1;
-        var company = new Company() { Classification = Classification.Gold };
-        var customer = new Customer(firstname, surname, dob, email, company) { HasCreditLimit = true, CreditLimit = 2000 };
+        var company = new Company {Classification = Classification.Gold};
+        var customer = new Customer(firstname, surname, dob, email, company)
+            {HasCreditLimit = true, CreditLimit = 2000};
 
         _fixture.MockCustomerValidator.Setup(x => x.ValidateCustomer(firstname, surname, email, dob)).Returns(true);
         _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync(company);
-        _fixture.MockCreditLimitFactory.Setup(x => x.GetCreditLimitService(company.Classification)).Returns(_fixture.MockCreditLimitService.Object);
+        _fixture.MockCreditLimitFactory.Setup(x => x.GetCreditLimitService(company.Classification))
+            .Returns(_fixture.MockCreditLimitService.Object);
         _fixture.MockCreditLimitService.Setup(x => x.SetCreditLimit(It.IsAny<Customer>())).Returns(customer);
 
         Expression<Func<Customer, bool>> customerExpression = x => x.HasCreditLimit == customer.HasCreditLimit
-                                                                          && x.CreditLimit == customer.CreditLimit
-                                                                          && x.Company.Classification == company.Classification
-                                                                          && x.DateOfBirth == dob
-                                                                          && x.EmailAddress == email
-                                                                          && x.Firstname == firstname
-                                                                          && x.Surname == surname;
+                                                                   && x.CreditLimit == customer.CreditLimit
+                                                                   && x.Company.Classification == company.Classification
+                                                                   && x.DateOfBirth == dob
+                                                                   && x.EmailAddress == email
+                                                                   && x.Firstname == firstname
+                                                                   && x.Surname == surname;
 
         _fixture.MockDataAccessWrapper.Setup(x => x.AddCustomer(It.Is(customerExpression))).Verifiable();
 
@@ -93,12 +93,13 @@ public class CustomerServiceTests : IClassFixture<CustomerServiceTestFixture>
         var dob = new DateTime(1987, 1, 1);
         var companyId = 1;
 
-        var company = new Company() { Classification = Classification.Gold };
-        var customer = new Customer(firstname, surname, dob, email, company) { HasCreditLimit = true, CreditLimit = 2 };
+        var company = new Company {Classification = Classification.Gold};
+        var customer = new Customer(firstname, surname, dob, email, company) {HasCreditLimit = true, CreditLimit = 2};
 
         _fixture.MockCustomerValidator.Setup(x => x.ValidateCustomer(firstname, surname, email, dob)).Returns(true);
         _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync(company);
-        _fixture.MockCreditLimitFactory.Setup(x => x.GetCreditLimitService(company.Classification)).Returns(_fixture.MockCreditLimitService.Object);
+        _fixture.MockCreditLimitFactory.Setup(x => x.GetCreditLimitService(company.Classification))
+            .Returns(_fixture.MockCreditLimitService.Object);
         _fixture.MockCreditLimitService.Setup(x => x.SetCreditLimit(It.IsAny<Customer>())).Returns(customer);
 
         var result = await _fixture.Service.AddCustomer(firstname, surname, email, dob, 1);

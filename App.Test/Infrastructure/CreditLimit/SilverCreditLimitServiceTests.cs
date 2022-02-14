@@ -17,8 +17,9 @@ public class SilverCreditLimitServiceTests
         var creditLimit = 20;
         var customer = new Customer("f", "s", DateTime.Now, "e", new Company());
 
-        Mock<ICustomerCreditService> mockCreditService = new Mock<ICustomerCreditService>();
-        mockCreditService.Setup(x => x.GetCreditLimit(customer.Firstname, customer.Surname, customer.DateOfBirth)).Returns(creditLimit);
+        var mockCreditService = new Mock<ICustomerCreditService>();
+        mockCreditService.Setup(x => x.GetCreditLimit(customer.Firstname, customer.Surname, customer.DateOfBirth))
+            .Returns(creditLimit);
 
         var service = new SilverCreditLimitService(mockCreditService.Object);
 

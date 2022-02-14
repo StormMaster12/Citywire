@@ -1,7 +1,9 @@
-﻿namespace App.Abstraction.ThirdParty
+﻿using System.CodeDom.Compiler;
+using System.ServiceModel;
+
+namespace App.Abstraction.ThirdParty;
+
+[GeneratedCode("System.ServiceModel", "4.0.0.0")]
+public interface ICustomerCreditServiceChannel : ICustomerCreditService, IClientChannel
 {
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ICustomerCreditServiceChannel : ICustomerCreditService, System.ServiceModel.IClientChannel
-    {
-    }
 }

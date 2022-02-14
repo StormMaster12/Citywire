@@ -14,9 +14,9 @@ public class CreditLimitFactory : ICreditLimitFactory
     {
         _funcs = new Dictionary<Classification, Func<ICreditLimitService>>
         {
-            { Classification.Gold, () => creditLimitServices.First(x => x is GoldCreditLimitService) },
-            { Classification.Silver, () => creditLimitServices.First(x => x is SilverCreditLimitService) },
-            { Classification.Bronze, () => creditLimitServices.First(x => x is BronzeCreditLimitService) },
+            {Classification.Gold, () => creditLimitServices.First(x => x is GoldCreditLimitService)},
+            {Classification.Silver, () => creditLimitServices.First(x => x is SilverCreditLimitService)},
+            {Classification.Bronze, () => creditLimitServices.First(x => x is BronzeCreditLimitService)}
         };
     }
 

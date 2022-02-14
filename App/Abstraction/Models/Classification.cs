@@ -1,9 +1,8 @@
-namespace App.Abstraction.Models
+namespace App.Abstraction.Models;
+
+public enum Classification
 {
-    public enum Classification
-    {
-        Bronze = 1,
-        Silver = 2,
-        Gold = 3
-    }
+    Bronze = 1,
+    Silver = 2,
+    Gold = 3
 }

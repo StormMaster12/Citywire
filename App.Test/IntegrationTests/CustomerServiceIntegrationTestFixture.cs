@@ -12,18 +12,18 @@ namespace App.Test.IntegrationTests;
 
 public class CustomerServiceIntegrationTestFixture
 {
-    public CustomerService Service;
     public Mock<ICompanyRepository> MockCompanyRepository;
-    public Mock<ICustomerDataAccessWrapper> MockDataAccessWrapper;
     public Mock<ICustomerCreditService> MockCreditService;
+    public Mock<ICustomerDataAccessWrapper> MockDataAccessWrapper;
+    public CustomerService Service;
 
     public CustomerServiceIntegrationTestFixture()
     {
-        MockCompanyRepository = new();
-        MockDataAccessWrapper = new();
-        MockCreditService = new();
+        MockCompanyRepository = new Mock<ICompanyRepository>();
+        MockDataAccessWrapper = new Mock<ICustomerDataAccessWrapper>();
+        MockCreditService = new Mock<ICustomerCreditService>();
 
-        var creditLimitFactory = new CreditLimitFactory(new List<ICreditLimitService>()
+        var creditLimitFactory = new CreditLimitFactory(new List<ICreditLimitService>
         {
             new BronzeCreditLimitService(MockCreditService.Object),
             new GoldCreditLimitService(MockCreditService.Object),
@@ -33,6 +33,7 @@ public class CustomerServiceIntegrationTestFixture
         var mockProvider = new Mock<IDateTimeProvider>();
         mockProvider.Setup(x => x.Now()).Returns(new DateTime(2022, 1, 1));
 
-        Service = new(new CustomerValidator(mockProvider.Object), MockCompanyRepository.Object, creditLimitFactory, MockDataAccessWrapper.Object);
+        Service = new CustomerService(new CustomerValidator(mockProvider.Object), MockCompanyRepository.Object,
+            creditLimitFactory, MockDataAccessWrapper.Object);
     }
 }

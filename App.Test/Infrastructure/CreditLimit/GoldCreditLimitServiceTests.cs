@@ -16,8 +16,9 @@ public class GoldCreditLimitServiceTests
         var creditLimit = 0;
         var customer = new Customer("f", "s", DateTime.Now, "e", new Company());
 
-        Mock<ICustomerCreditService> mockCreditService = new Mock<ICustomerCreditService>();
-        mockCreditService.Setup(x => x.GetCreditLimit(customer.Firstname, customer.Surname, customer.DateOfBirth)).Verifiable();
+        var mockCreditService = new Mock<ICustomerCreditService>();
+        mockCreditService.Setup(x => x.GetCreditLimit(customer.Firstname, customer.Surname, customer.DateOfBirth))
+            .Verifiable();
 
         var service = new GoldCreditLimitService(mockCreditService.Object);
 
@@ -26,6 +27,7 @@ public class GoldCreditLimitServiceTests
         result.CreditLimit.Should().Be(creditLimit);
         result.HasCreditLimit.Should().BeFalse();
 
-        mockCreditService.Verify(x => x.GetCreditLimit(customer.Firstname, customer.Surname, customer.DateOfBirth), Times.Never);
+        mockCreditService.Verify(x => x.GetCreditLimit(customer.Firstname, customer.Surname, customer.DateOfBirth),
+            Times.Never);
     }
 }

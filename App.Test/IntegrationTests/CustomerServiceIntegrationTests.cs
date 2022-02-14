@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using App.Abstraction;
 using App.Abstraction.Models;
 using FluentAssertions;
 using Moq;
@@ -25,7 +24,8 @@ public class CustomerServiceIntegrationTests : IClassFixture<CustomerServiceInte
     [InlineData("f", "s", "e@", "1987-01-11")]
     [InlineData("f", "s", "e.", "1987-01-11")]
     [InlineData("f", "s", "e@.", "2022-1-1")]
-    public async Task AddCustomer_Invalid_Values_Should_Return_False(string firstname, string surname, string email, DateTime dob)
+    public async Task AddCustomer_Invalid_Values_Should_Return_False(string firstname, string surname, string email,
+        DateTime dob)
     {
         var result = await _fixture.Service.AddCustomer(firstname, surname, email, dob, 1);
 
@@ -41,7 +41,7 @@ public class CustomerServiceIntegrationTests : IClassFixture<CustomerServiceInte
         var dob = new DateTime(1987, 1, 1);
         var companyId = 1;
 
-        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync((Company?)null);
+        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync((Company?) null);
 
         var result = await _fixture.Service.AddCustomer(firstname, surname, email, dob, 1);
 
@@ -57,7 +57,8 @@ public class CustomerServiceIntegrationTests : IClassFixture<CustomerServiceInte
         var dob = new DateTime(1987, 1, 1);
         var companyId = 1;
 
-        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync(new Company() { Classification = Classification.Gold });
+        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId))
+            .ReturnsAsync(new Company {Classification = Classification.Gold});
 
         Expression<Func<Customer, bool>> customerExpression = customer => !customer.HasCreditLimit;
 
@@ -82,10 +83,12 @@ public class CustomerServiceIntegrationTests : IClassFixture<CustomerServiceInte
         var companyId = 1;
         var creditLimit = 1000;
 
-        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync(new Company() { Classification = Classification.Silver });
+        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId))
+            .ReturnsAsync(new Company {Classification = Classification.Silver});
         _fixture.MockCreditService.Setup(x => x.GetCreditLimit(firstname, surname, dob)).Returns(creditLimit);
 
-        Expression<Func<Customer, bool>> customerExpression = customer => customer.HasCreditLimit && customer.CreditLimit == expectedCreditLimit;
+        Expression<Func<Customer, bool>> customerExpression =
+            customer => customer.HasCreditLimit && customer.CreditLimit == expectedCreditLimit;
 
         _fixture.MockDataAccessWrapper.Setup(x => x.AddCustomer(It.Is(customerExpression))).Verifiable();
 
@@ -108,10 +111,12 @@ public class CustomerServiceIntegrationTests : IClassFixture<CustomerServiceInte
         var companyId = 1;
         var creditLimit = 1000;
 
-        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync(new Company() { Classification = Classification.Bronze });
+        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId))
+            .ReturnsAsync(new Company {Classification = Classification.Bronze});
         _fixture.MockCreditService.Setup(x => x.GetCreditLimit(firstname, surname, dob)).Returns(creditLimit);
 
-        Expression<Func<Customer, bool>> customerExpression = customer => customer.HasCreditLimit && customer.CreditLimit == expectedCreditLimit;
+        Expression<Func<Customer, bool>> customerExpression =
+            customer => customer.HasCreditLimit && customer.CreditLimit == expectedCreditLimit;
 
         _fixture.MockDataAccessWrapper.Setup(x => x.AddCustomer(It.Is(customerExpression))).Verifiable();
 
@@ -132,7 +137,8 @@ public class CustomerServiceIntegrationTests : IClassFixture<CustomerServiceInte
         var companyId = 1;
         var creditLimit = 100;
 
-        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync(new Company() { Classification = Classification.Bronze });
+        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId))
+            .ReturnsAsync(new Company {Classification = Classification.Bronze});
         _fixture.MockCreditService.Setup(x => x.GetCreditLimit(firstname, surname, dob)).Returns(creditLimit);
 
         var result = await _fixture.Service.AddCustomer(firstname, surname, email, dob, 1);
@@ -152,7 +158,8 @@ public class CustomerServiceIntegrationTests : IClassFixture<CustomerServiceInte
         var companyId = 1;
         var creditLimit = 3000;
 
-        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId)).ReturnsAsync(new Company() { Name = "a", Classification = Classification.Bronze });
+        _fixture.MockCompanyRepository.Setup(x => x.GetById(companyId))
+            .ReturnsAsync(new Company {Name = "a", Classification = Classification.Bronze});
         _fixture.MockCreditService.Setup(x => x.GetCreditLimit(firstname, surname, dob)).Returns(creditLimit);
 
         Expression<Func<Customer, bool>> customerExpression = customer => customer.HasCreditLimit

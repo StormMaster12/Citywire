@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
-using App.Abstraction;
-using App.Infrastructure;
-using App.Infrastructure.Services;
 using FluentAssertions;
-using Moq;
 using Xunit;
 
 namespace App.Test.Infrastructure;
@@ -25,7 +20,8 @@ public class CustomerValidatorTests : IClassFixture<CustomerValidatorTestFixture
     [InlineData("f", "s", "e.", "1987-01-11")]
     [InlineData("f", "s", "e@", "1987-01-11")]
     [InlineData("f", "s", "e@.", "2022-1-1")]
-    public void ValidateCustomer_Invalid_Values_Should_Return_False(string firstname, string surname, string email, DateTime dob)
+    public void ValidateCustomer_Invalid_Values_Should_Return_False(string firstname, string surname, string email,
+        DateTime dob)
     {
         var result = _fixture.Validator.ValidateCustomer(firstname, surname, email, dob);
 
